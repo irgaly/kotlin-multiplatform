@@ -6,6 +6,18 @@ Android Studio でプロジェクトを開き、 `android` モジュールを実
 
 Xcode で `ios.swift/MultiplatformHost.xcodeproj` を開いて実行すると iOS アプリが起動します。
 
+## Project Structure
+
+| ディレクトリ | 内容 |
+| --- | --- |
+| kotlin-multiplatform | |
+| ├ android | Android アプリプロジェクト (ライブラリ動作確認用アプリ) |
+| ├ ios.swift | Xcode プロジェクト (ライブラリ動作確認用アプリ) |
+| ├ common | Kotlin/Native Common モジュール |
+| ├ platform.android | Kotlin/Native Platform Android モジュール (Android Library プロジェクト形式) |
+| ├ platform.ios | Kotlin/Native Platform iOS モジュール |
+| └ ... | |
+
 ## 開発環境
 
 Mac
