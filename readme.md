@@ -2,7 +2,7 @@ Kotlin/Native Multiplatform を用いた Android/iOS ライブラリのサンプ
 
 ## Usage
 
-Android Studio でプロジェクトを開き、 `android` モジュールを実行すると Android アプリが起動します。
+Android Studio で `kotlin-multiplatform/build.gradle` をプロジェクトとして開き、 `android` モジュールを実行すると Android アプリが起動します。
 
 Xcode で `ios.swift/MultiplatformHost.xcodeproj` を開いて実行すると iOS アプリが起動します。
 
