@@ -1,0 +1,14 @@
+apply plugin: 'konan'
+
+konan.targets = ['iphone', 'iphone_sim']
+
+konanArtifacts {
+    framework('KMLibrary') {
+        enableMultiplatform true
+        srcDir 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    expectedBy project(':common')
+}

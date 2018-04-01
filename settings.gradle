@@ -1,2 +1,4 @@
 rootProject.name = 'kotlin-multiplatform'
-include ':android', ':common', ':platform.android'
+include ':common'
+include ':android', ':platform.android'
+include ':platform.ios'
