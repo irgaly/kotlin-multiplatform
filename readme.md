@@ -18,7 +18,7 @@ Xcode で `ios.swift/MultiplatformHost.xcodeproj` を開いて実行すると iO
 | ├ platform.ios | Kotlin/Native Platform iOS モジュール |
 | └ ... | |
 
-## 開発環境
+## Environment
 
 Mac
 
