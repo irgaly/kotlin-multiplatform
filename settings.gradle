@@ -1,4 +1,5 @@
+enableFeaturePreview('GRADLE_METADATA')
 rootProject.name = 'kotlin-multiplatform'
-include ':common'
-include ':android', ':platform.android'
-include ':ios.swift', ':platform.ios'
+include ':library'
+include ':android'
+include ':ios.swift'

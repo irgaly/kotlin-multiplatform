@@ -1,17 +1,22 @@
 buildscript {
-    ext.kotlin_version = '1.2.40-eap-16'
-    ext.kotlin_native_version = '0.6.2'
+    ext {
+        kotlin_version = '1.3.0-rc-131'
+        kotlinx_coroutines_version = '0.22.5'
+        dokka_version = '0.9.17'
+    }
 
     repositories {
         jcenter()
         google()
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-        maven { url "https://dl.bintray.com/jetbrains/kotlin-native-dependencies" }
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:$kotlin_native_version"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${dokka_version}"
     }
 }
 
@@ -19,6 +24,8 @@ allprojects {
     repositories {
         jcenter()
         google()
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
     }
 }

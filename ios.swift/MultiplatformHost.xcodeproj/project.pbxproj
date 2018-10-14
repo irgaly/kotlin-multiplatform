@@ -12,8 +12,8 @@
 		90B6E2202070D02C00CFEDBF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B6E21E2070D02C00CFEDBF /* Main.storyboard */; };
 		90B6E2222070D02F00CFEDBF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90B6E2212070D02F00CFEDBF /* Assets.xcassets */; };
 		90B6E2252070D02F00CFEDBF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B6E2232070D02F00CFEDBF /* LaunchScreen.storyboard */; };
-		90B6E2302070D3BF00CFEDBF /* KMLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90B6E22F2070D3BE00CFEDBF /* KMLibrary.framework */; };
-		90B6E2312070D3CB00CFEDBF /* KMLibrary.framework in Copy Kotlin Common Library */ = {isa = PBXBuildFile; fileRef = 90B6E22F2070D3BE00CFEDBF /* KMLibrary.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		90C6FE68217344AA007BB523 /* KotlinMultiPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90C6FE67217344AA007BB523 /* KotlinMultiPlatform.framework */; };
+		90C6FE69217344BC007BB523 /* KotlinMultiPlatform.framework in Copy Kotlin Common Library */ = {isa = PBXBuildFile; fileRef = 90C6FE67217344AA007BB523 /* KotlinMultiPlatform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,7 +23,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				90B6E2312070D3CB00CFEDBF /* KMLibrary.framework in Copy Kotlin Common Library */,
+				90C6FE69217344BC007BB523 /* KotlinMultiPlatform.framework in Copy Kotlin Common Library */,
 			);
 			name = "Copy Kotlin Common Library";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,8 +38,7 @@
 		90B6E2212070D02F00CFEDBF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		90B6E2242070D02F00CFEDBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		90B6E2262070D02F00CFEDBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		90B6E22F2070D3BE00CFEDBF /* KMLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KMLibrary.framework; path = build/KMLibrary.framework; sourceTree = "<group>"; };
-		90B6E2322070D40800CFEDBF /* MultiplatformHost-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MultiplatformHost-Bridging-Header.h"; sourceTree = "<group>"; };
+		90C6FE67217344AA007BB523 /* KotlinMultiPlatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KotlinMultiPlatform.framework; path = build/KotlinMultiPlatform.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90B6E2302070D3BF00CFEDBF /* KMLibrary.framework in Frameworks */,
+				90C6FE68217344AA007BB523 /* KotlinMultiPlatform.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,7 +57,6 @@
 			isa = PBXGroup;
 			children = (
 				90B6E2192070D02C00CFEDBF /* MultiplatformHost */,
-				90B6E2322070D40800CFEDBF /* MultiplatformHost-Bridging-Header.h */,
 				90B6E2182070D02C00CFEDBF /* Products */,
 				90B6E22E2070D3BE00CFEDBF /* Frameworks */,
 			);
@@ -88,7 +86,7 @@
 		90B6E22E2070D3BE00CFEDBF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				90B6E22F2070D3BE00CFEDBF /* KMLibrary.framework */,
+				90C6FE67217344AA007BB523 /* KotlinMultiPlatform.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -126,6 +124,7 @@
 				TargetAttributes = {
 					90B6E2162070D02C00CFEDBF = {
 						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -173,7 +172,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$SRCROOT/build\"\n\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../platform.ios\" build\nrm -rf \"$SRCROOT\"/build/*.framework\ncp -a \"$KONAN_LIBRARY_BUILD_DIR\"/*.framework \"$SRCROOT/build\"\n";
+			shellScript = "mkdir -p \"$SRCROOT/build\"\n\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../library\" \"$KN_LIBRARY_BUILD_TASK\"\nrm -rf \"$SRCROOT/build/KotlinMultiPlatform.framework\"\ncp -a \"$KN_LIBRARY_BUILD_PATH\" \"$SRCROOT/build/KotlinMultiPlatform.framework\"\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -334,9 +333,12 @@
 					"$(PROJECT_DIR)/build",
 				);
 				INFOPLIST_FILE = MultiplatformHost/Info.plist;
-				KONAN_LIBRARY_BUILD_DIR = "";
-				"KONAN_LIBRARY_BUILD_DIR[sdk=iphoneos*]" = $SRCROOT/../platform.ios/build/konan/bin/iphone;
-				"KONAN_LIBRARY_BUILD_DIR[sdk=iphonesimulator*]" = $SRCROOT/../platform.ios/build/konan/bin/iphone_sim;
+				KN_LIBRARY_BUILD_PATH = "";
+				"KN_LIBRARY_BUILD_PATH[sdk=iphoneos*]" = $SRCROOT/../library/build/bin/iosArm64/main/debug/framework/KotlinMultiPlatform.framework;
+				"KN_LIBRARY_BUILD_PATH[sdk=iphonesimulator*]" = $SRCROOT/../library/build/bin/iosX64/main/debug/framework/KotlinMultiPlatform.framework;
+				KN_LIBRARY_BUILD_TASK = "";
+				"KN_LIBRARY_BUILD_TASK[sdk=iphoneos*]" = linkDebugFrameworkIosArm64;
+				"KN_LIBRARY_BUILD_TASK[sdk=iphonesimulator*]" = linkDebugFrameworkIosX64;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -344,8 +346,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.irgaly.kotlin.multiplatform.MultiplatformHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT)/MultiplatformHost-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -361,9 +362,12 @@
 					"$(PROJECT_DIR)/build",
 				);
 				INFOPLIST_FILE = MultiplatformHost/Info.plist;
-				KONAN_LIBRARY_BUILD_DIR = "";
-				"KONAN_LIBRARY_BUILD_DIR[sdk=iphoneos*]" = $SRCROOT/../platform.ios/build/konan/bin/iphone;
-				"KONAN_LIBRARY_BUILD_DIR[sdk=iphonesimulator*]" = $SRCROOT/../platform.ios/build/konan/bin/iphone_sim;
+				KN_LIBRARY_BUILD_PATH = "";
+				"KN_LIBRARY_BUILD_PATH[sdk=iphoneos*]" = $SRCROOT/../library/build/bin/iosArm64/main/release/framework/KotlinMultiPlatform.framework;
+				"KN_LIBRARY_BUILD_PATH[sdk=iphonesimulator*]" = $SRCROOT/../library/build/bin/iosX64/main/release/framework/KotlinMultiPlatform.framework;
+				KN_LIBRARY_BUILD_TASK = "";
+				"KN_LIBRARY_BUILD_TASK[sdk=iphoneos*]" = linkReleaseFrameworkIosArm64;
+				"KN_LIBRARY_BUILD_TASK[sdk=iphonesimulator*]" = linkReleaseFrameworkIosX64;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -371,8 +375,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.irgaly.kotlin.multiplatform.MultiplatformHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT)/MultiplatformHost-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -1,0 +1,146 @@
+apply plugin: 'kotlin-multiplatform'
+apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka-android'
+
+ext {
+    android_version = '1.0.0'
+    android_build = 1
+    android_library_name = "multiplatform"
+    ios_version = '1.0.0'
+    ios_framework_name = 'KotlinMultiPlatform'
+}
+
+apply from: 'android.gradle'
+
+kotlin {
+    targets {
+        fromPreset(presets.android, 'android')
+        fromPreset(presets.iosArm64, 'iosArm64')
+        fromPreset(presets.iosX64, 'iosX64')
+
+        configure([iosArm64, iosX64]) {
+            compilations.main {
+                outputKinds += FRAMEWORK
+            }
+        }
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+                implementation "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            }
+        }
+        iosMain {
+        }
+        iosArm64Main {
+            dependsOn iosMain
+        }
+        iosX64Main {
+            dependsOn iosMain
+        }
+    }
+}
+
+task dokkaMarkdownAndroid(type: org.jetbrains.dokka.gradle.DokkaAndroidTask) {
+    outputFormat = 'gfm'
+    outputDirectory = "$buildDir/markdown/android"
+    kotlinTasks { [compileReleaseKotlinAndroid] }
+    reportUndocumented = false
+}
+
+task dokkaMarkdownIos(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = 'gfm'
+    outputDirectory = "$buildDir/markdown/ios"
+    kotlinTasks { [] } // dokkaはiOSのTaskを読み込めないため、sourceDirsで指定する
+    sourceDirs = files("src/iosMain/kotlin") + files("src/commonMain/kotlin")
+    reportUndocumented = false
+}
+
+task dokkaJavadocAndroid(type: org.jetbrains.dokka.gradle.DokkaAndroidTask) {
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/javadoc/android"
+    kotlinTasks { [compileReleaseKotlinAndroid] }
+    reportUndocumented = false
+}
+
+// Android KDocリリースタスク
+task uploadDocumentAndroid {
+    group = 'upload'
+    dependsOn dokkaMarkdownAndroid
+    doLast {
+        new File("${rootDir.absolutePath}/repository/docs/$android_library_name/$android_version/android").deleteDir()
+        copy {
+            from "$buildDir/markdown/android"
+            into "${rootDir.absolutePath}/repository/docs/$android_library_name/$android_version/android"
+        }
+    }
+}
+
+// iOS KDocリリースタスク
+task uploadDocumentIos {
+    group = 'upload'
+    dependsOn dokkaMarkdownIos
+    doLast {
+        new File("${rootDir.absolutePath}/repository/docs/$ios_framework_name/$ios_version/ios").deleteDir()
+        copy {
+            from "$buildDir/markdown/ios"
+            into "${rootDir.absolutePath}/repository/docs/$ios_framework_name/$ios_version/ios"
+        }
+    }
+}
+
+afterEvaluate {
+    [linkReleaseFrameworkIosArm64, linkDebugFrameworkIosArm64,
+     linkReleaseFrameworkIosX64, linkDebugFrameworkIosX64].forEach { task ->
+        task.doFirst {
+            def target = compilation.target.disambiguationClassifier
+            def buildType = compilation.buildTypes.find{ it.debuggable == debuggable }.name.toLowerCase()
+            compilation.extraOpts '-o', new File(buildDir, "bin/$target/${compilation.name}/$buildType/framework/${ios_framework_name}.framework").absolutePath
+        }
+        task.doLast {
+            compilation.extraOpts.clear()
+        }
+    }
+
+    // iOS .frameworkリリースタスク
+    task uploadFramework {
+        group = 'upload'
+        dependsOn linkIosArm64
+        dependsOn linkIosX64
+        doLast {
+            new File("${rootDir.absolutePath}/repository/swift/$ios_framework_name/$ios_version/ios_arm64/${ios_framework_name}.framework").deleteDir()
+            new File("${rootDir.absolutePath}/repository/swift/$ios_framework_name/$ios_version/ios_arm64/${ios_framework_name}-debug.framework").deleteDir()
+            new File("${rootDir.absolutePath}/repository/swift/$ios_framework_name/$ios_version/ios_x64/${ios_framework_name}.framework").deleteDir()
+            new File("${rootDir.absolutePath}/repository/swift/$ios_framework_name/$ios_version/ios_x64/${ios_framework_name}-debug.framework").deleteDir()
+            copy {
+                from "$buildDir/bin/iosArm64/main/debug/framework/${ios_framework_name}.framework"
+                into "${rootDir.absolutePath}/repository/swift/$ios_framework_name/$ios_version/ios_arm64/${ios_framework_name}-debug.framework"
+            }
+            copy {
+                from "$buildDir/bin/iosArm64/main/release/framework/${ios_framework_name}.framework"
+                into "${rootDir.absolutePath}/repository/swift/$ios_framework_name/$ios_version/ios_arm64/${ios_framework_name}.framework"
+            }
+            copy {
+                from "$buildDir/bin/iosX64/main/debug/framework/${ios_framework_name}.framework"
+                into "${rootDir.absolutePath}/repository/swift/$ios_framework_name/$ios_version/ios_x64/${ios_framework_name}-debug.framework"
+            }
+            copy {
+                from "$buildDir/bin/iosX64/main/release/framework/${ios_framework_name}.framework"
+                into "${rootDir.absolutePath}/repository/swift/$ios_framework_name/$ios_version/ios_x64/${ios_framework_name}.framework"
+            }
+        }
+    }
+}
+
+
