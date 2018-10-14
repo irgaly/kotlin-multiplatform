@@ -1,6 +1,6 @@
 package net.irgaly.kotlin.multiplatform.host
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import net.irgaly.kotlin.multiplatform.library.model.User
