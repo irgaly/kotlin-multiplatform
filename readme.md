@@ -6,6 +6,8 @@ Android Studio で `kotlin-multiplatform/build.gradle` をプロジェクトと�
 
 Xcode で `ios.swift/MultiplatformHost.xcodeproj` を開いて実行すると iOS アプリが起動します。
 
+このプロジェクトは [Kotlin/Native Multiplatform プロジェクトで Android/iOS 向けの共通ライブラリを作る](https://qiita.com/irgaly/items/eebd1273b38e1e671fcf) で解説しています。
+
 ## Project Structure
 
 | ディレクトリ | 内容 |
